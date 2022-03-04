@@ -1,3 +1,14 @@
+<script>
+  export let todos = [];
+  $: totalTodos = todos.length;
+  $: completedTodos = todos.filter((todo) => todo.completed).length;
+  function removeTodo(todo) {
+    todos = todos.filter((t) => t.id !== todo.id);
+  }
+
+  let newTodoName = "";
+</script>
+
 <div class="todo_app">
   <div class="card">
     <form>
@@ -12,48 +23,79 @@
       />
       <button type="submit">Add Task</button>
     </form>
-    <div>
+    <div class="btn_group">
       <button>
-        <span>Show</span><span>All</span><span>Tasks</span>
+        <span class="sr-only">Show</span>
+        <span>All</span>
+        <span class="sr-only">Tasks</span>
       </button>
       <button>
-        <span>Show</span><span>Active</span><span>Tasks</span>
+        <span class="sr-only">Show</span>
+        <span>Active</span>
+        <span class="sr-only">Tasks</span>
       </button>
       <button>
-        <span>Show</span><span>Completed</span><span>Tasks</span>
+        <span class="sr-only">Show</span>
+        <span>Completed</span>
+        <span class="sr-only">Tasks</span>
       </button>
     </div>
-    <h2>2 out of 3 items completed</h2>
+    <h2>{completedTodos} out of {totalTodos} items completed</h2>
+    <ul>
+      {#each todos as todo, index (todo.id)}
+        <li key={index}>
+          <form>
+            <input
+              type="checkbox"
+              name="task-{todo.id}"
+              id="task-{todo.id}"
+              on:click={() => (todo.completed = !todo.completed)}
+              checked={todo.completed}
+            />
+            <label for="task-{todo.id}">{todo.name}</label>
+            <div class="btn_group">
+              <button>
+                <span>Edit</span>
+                <span class="sr-only">{todo.name}</span>
+              </button>
+              <button on:click={() => removeTodo(todo)}>
+                <span>Delete</span>
+                <span class="sr-only">{todo.name}</span>
+              </button>
+            </div>
+          </form>
+        </li>
+      {:else}
+        <li>Nothing to do here !!!!</li>
+        <li />{/each}
+    </ul>
 
     <ul>
       <li>
-        <form>
+        <form class="edit_todo">
           <label for="task-1"
             >New description for 'Create a svelte todo list app'</label
           >
-          <input type="text" name="task-1" id="task-1" />
-          <button>
-            <span>Cancel</span>
-            <span>renaming 'Create a svelte todo list app'</span></button
-          >
-          <button>
-            <span>Save</span>
-            <span>new name for 'Create a svelte todo list app'</span></button
-          >
-        </form>
-      </li>
-      <li>
-        <form>
-          <input type="checkbox" name="task-2" id="task-2" />
-          <label for="task-2">Create your first component</label>
-          <button
-            ><span>Edit</span>
-            <span>Create your first component</span></button
-          >
-          <button
-            ><span>Delete</span>
-            <span>Create your first component</span></button
-          >
+          <input
+            type="text"
+            name="task-1"
+            id="task-1"
+            placeholder="Update description"
+          />
+          <div class="btn_group">
+            <button>
+              <span>Cancel</span>
+              <span class="sr-only"
+                >renaming 'Create a svelte todo list app'</span
+              ></button
+            >
+            <button>
+              <span>Save</span>
+              <span class="sr-only"
+                >new name for 'Create a svelte todo list app'</span
+              ></button
+            >
+          </div>
         </form>
       </li>
     </ul>
@@ -65,11 +107,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 90vh;
   }
   .card {
     background-color: #fff;
     color: #333;
     border-radius: 12px;
     padding: 15px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .edit_todo {
+    display: flex;
+    flex-direction: column;
+  }
+  ul > li {
+    margin: 10px 0;
+  }
+
+  .btn_group {
+    display: flex;
+  }
+
+  .btn_group button {
+    flex: 1;
   }
 </style>
