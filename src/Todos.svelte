@@ -15,6 +15,18 @@
     ];
     newTodoName = "";
   }
+
+  let filter = "all";
+  const applyFilter = (appliedFilter) => {
+    filter = appliedFilter;
+  };
+
+  const filterTodos = (filter, todos) =>
+    filter === "active"
+      ? todos.filter((t) => !t.completed)
+      : filter === "completed"
+      ? todos.filter((t) => t.completed)
+      : todos;
 </script>
 
 <div class="todo_app">
@@ -33,17 +45,17 @@
       <button type="submit">Add Task</button>
     </form>
     <div class="btn_group">
-      <button>
+      <button on:click={() => applyFilter("all")}>
         <span class="sr-only">Show</span>
         <span>All</span>
         <span class="sr-only">Tasks</span>
       </button>
-      <button>
+      <button on:click={() => applyFilter("active")}>
         <span class="sr-only">Show</span>
         <span>Active</span>
         <span class="sr-only">Tasks</span>
       </button>
-      <button>
+      <button on:click={() => applyFilter("completed")}>
         <span class="sr-only">Show</span>
         <span>Completed</span>
         <span class="sr-only">Tasks</span>
@@ -51,7 +63,7 @@
     </div>
     <h2>{completedTodos} out of {totalTodos} items completed</h2>
     <ul>
-      {#each todos as todo, index (todo.id)}
+      {#each filterTodos(filter, todos) as todo, index (todo.id)}
         <li key={index}>
           <form>
             <input
@@ -143,5 +155,6 @@
 
   .btn_group button {
     flex: 1;
+    cursor: pointer;
   }
 </style>
