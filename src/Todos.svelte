@@ -7,15 +7,24 @@
   }
 
   let newTodoName = "";
+
+  function addTodo() {
+    todos = [
+      ...todos,
+      { id: Math.random(), name: newTodoName, completed: false },
+    ];
+    newTodoName = "";
+  }
 </script>
 
 <div class="todo_app">
   <div class="card">
-    <form>
+    <form on:submit|preventDefault={addTodo}>
       <h1>
         <label for="task-input">Get things done !!!</label>
       </h1>
       <input
+        bind:value={newTodoName}
         type="text"
         name="task-input"
         id="task-input"
@@ -54,7 +63,7 @@
             />
             <label for="task-{todo.id}">{todo.name}</label>
             <div class="btn_group">
-              <button>
+              <button on:click={(event) => event.preventDefault()}>
                 <span>Edit</span>
                 <span class="sr-only">{todo.name}</span>
               </button>
