@@ -1,4 +1,5 @@
 <script>
+  import Filter from "./Filter.svelte";
   export let todos = [];
   $: totalTodos = todos.length;
   $: completedTodos = todos.filter((todo) => todo.completed).length;
@@ -17,9 +18,6 @@
   }
 
   let filter = "all";
-  const applyFilter = (appliedFilter) => {
-    filter = appliedFilter;
-  };
 
   const filterTodos = (filter, todos) =>
     filter === "active"
@@ -44,23 +42,8 @@
       />
       <button type="submit">Add Task</button>
     </form>
-    <div class="btn_group">
-      <button on:click={() => applyFilter("all")}>
-        <span class="sr-only">Show</span>
-        <span>All</span>
-        <span class="sr-only">Tasks</span>
-      </button>
-      <button on:click={() => applyFilter("active")}>
-        <span class="sr-only">Show</span>
-        <span>Active</span>
-        <span class="sr-only">Tasks</span>
-      </button>
-      <button on:click={() => applyFilter("completed")}>
-        <span class="sr-only">Show</span>
-        <span>Completed</span>
-        <span class="sr-only">Tasks</span>
-      </button>
-    </div>
+    <!--Add filter button component here-->
+    <Filter bind:filter />
     <h2>{completedTodos} out of {totalTodos} items completed</h2>
     <ul>
       {#each filterTodos(filter, todos) as todo, index (todo.id)}
