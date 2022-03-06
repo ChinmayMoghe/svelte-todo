@@ -1,5 +1,5 @@
 <script>
-  import Todos from "./Todos.svelte";
+  import Todos from "./components/Todos.svelte";
   let todos = [
     { id: 1, name: "Create a svelte app", completed: false },
     { id: 2, name: "Create your first svelte component", completed: true },

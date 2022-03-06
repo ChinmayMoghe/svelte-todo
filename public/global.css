@@ -54,3 +54,12 @@ ul {
   white-space: nowrap;
   width: 1px;
 }
+
+.btn_group {
+  display: flex;
+}
+
+.btn_group button {
+  flex: 1;
+  cursor: pointer;
+}
